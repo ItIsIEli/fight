@@ -3,10 +3,14 @@ namespace SpriteKind {
     export const bullet1 = SpriteKind.create()
     export const bullet2 = SpriteKind.create()
 }
+let projectile1: Sprite = null
+let mySprite: Sprite = null
+let horizontal1 = 0
+let vertial1 = 0
+let projectile2: Sprite = null
+let pokeguy: Sprite = null
+let pokeguy2: Sprite = null
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
-    let vertial1 = 0
-    let horizontal1 = 0
-    let mySprite: Sprite = null
     projectile1 = sprites.createProjectileFromSprite(img`
         . . c c c c . . 
         . c 2 2 2 2 c . 
@@ -401,21 +405,109 @@ function lore () {
 info.player1.onLifeZero(function () {
     music.powerUp.play()
     game.splash("player 2 win!!!")
-    start()
 })
 info.player2.onLifeZero(function () {
     music.powerUp.play()
     game.splash("player 1 win!!!")
-    start()
 })
-function start () {
-	
-}
-let pokeguy2: Sprite = null
-let pokeguy: Sprite = null
-let projectile2: Sprite = null
-let projectile1: Sprite = null
-start()
+game.onUpdate(function () {
+    if (mySprite.vx > 0) {
+        vertial1 = 0
+        horizontal1 = 1
+    } else if (mySprite.vx < 0) {
+        vertial1 = 0
+        horizontal1 = -1
+    }
+    if (mySprite.vx != 0) {
+        if (horizontal1 == -1) {
+            mySprite.setImage(img`
+                . . . . f f f f f f . . . . . . 
+                . . . f 2 2 1 1 1 2 f f . . . . 
+                . . f 2 2 4 4 4 4 4 2 2 f . . . 
+                . . f 2 4 4 4 4 4 4 4 2 f . . . 
+                . f 2 4 4 4 4 4 4 4 4 4 2 f . . 
+                . f f f f f f f 4 4 4 4 2 f . . 
+                . f e e e e e f f f f f f f . . 
+                . f e e 4 4 f b e 4 4 e f f . . 
+                . . f e d d f 1 4 d 4 e e f . . 
+                . . . f d d d d 4 e e e f c . . 
+                . c b b b b e e 2 2 2 f 2 c . . 
+                . c e b b e d d 4 2 2 f 2 c . . 
+                . . e f 2 e d d e 2 2 f 2 c . . 
+                . . e f 5 5 e e 4 4 4 f c . . . 
+                . . . . f f f f f f f . . . . . 
+                . . . . . . f f f . . . . . . . 
+                `)
+        } else {
+            mySprite.setImage(img`
+                . . . . . . f f f f f f . . . . 
+                . . . . f f 2 1 1 1 2 2 f . . . 
+                . . . f 2 2 4 4 4 4 4 2 2 f . . 
+                . . . f 2 4 4 4 4 4 4 4 2 f . . 
+                . . f 2 4 4 4 4 4 4 4 4 4 2 f . 
+                . . f 2 4 4 4 4 f f f f f f f . 
+                . . f f f f f f f e e e e e f . 
+                . . f f e 4 4 e b f 4 4 e e f . 
+                . . f e e 4 d 4 1 f d d e f . . 
+                . . c f e e e 4 d d d d f . . . 
+                . . c 2 f 2 2 2 e e b b b b c . 
+                . . c 2 f 2 2 4 d d e b b e c . 
+                . . c 2 f 2 2 e d d e 2 f e . . 
+                . . . c f 4 4 4 e e 5 5 f e . . 
+                . . . . . f f f f f f f . . . . 
+                . . . . . . . f f f . . . . . . 
+                `)
+        }
+    }
+    if (mySprite.vy < 0) {
+        horizontal1 = 0
+        vertial1 = 1
+    } else if (mySprite.vy > 0) {
+        horizontal1 = 0
+        vertial1 = -1
+    }
+    if (mySprite.vy != 0) {
+        if (vertial1 == -1) {
+            mySprite.setImage(img`
+                . . . . . . . . . . . . . . . . 
+                . . . . f f f f f f f f . . . . 
+                . . . f 2 2 1 1 1 1 2 2 f . . . 
+                . . f 2 2 4 4 4 4 4 4 2 2 f . . 
+                . . f 2 4 4 4 4 4 4 4 4 2 f . . 
+                . . f 2 4 f f f f f f 4 2 f . . 
+                . . f f f f e e e e f f f f . . 
+                . . f e f b f 4 4 f b f e f . . 
+                . . f e 4 1 f d d f 1 4 e f . . 
+                . . f e e d d d d d d e e f . . 
+                . . . f e e 4 4 4 4 e e f . . . 
+                . . . . c f 4 e b e 4 f . . . . 
+                . . . . c f d b b 4 d f . . . . 
+                . . . . . 4 4 c c 4 4 f . . . . 
+                . . . . . f f f f f f . . . . . 
+                . . . . . f f . . f f . . . . . 
+                `)
+        } else {
+            mySprite.setImage(img`
+                . . . . . . . . . . . . . . . . 
+                . . . . f f f f f f f f . . . . 
+                . . . f 2 2 1 1 1 1 2 2 f . . . 
+                . . f 2 2 2 4 4 4 4 2 2 2 f . . 
+                . . f 2 2 4 4 4 4 4 4 2 2 f . . 
+                . . f 2 4 4 4 4 4 4 4 4 2 f . . 
+                . . f 2 4 4 4 4 4 4 4 4 2 f . . 
+                . . f 2 4 4 4 4 4 4 4 4 2 f . . 
+                . . f 2 4 4 4 4 4 4 4 4 2 f . . 
+                . . f 2 2 4 4 4 4 4 4 2 2 f . . 
+                . . . f 2 2 4 4 4 4 2 2 f . . . 
+                . . . . f c c c c c c f . . . . 
+                . . . . f c 2 4 4 2 c f . . . . 
+                . . . . f c 2 2 2 2 c . . . . . 
+                . . . . . f c c c c f . . . . . 
+                . . . . . f f . . f f . . . . . 
+                `)
+        }
+    }
+})
 game.onUpdate(function () {
 	
 })
